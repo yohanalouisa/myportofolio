@@ -1,3 +1,3 @@
-Name : Yohana Louisa Saragih  
-NPM : 2506584205  
-Class : PBP E
+Name : Yohana Louisa Saragih    
+NPM : 2506584205    
+Class : PBP E  
