@@ -5,12 +5,12 @@
 }
 
 :root {
-    --ink: #1c1917;
-    --paper: #faf6f0;
-    --accent: #d95d39;
-    --accent-dark: #a8442a;
-    --line: #e3d9c9;
-    --text-muted: #6b6459;
+    --ink: #181b8e;
+    --paper: #f5f5ff;
+    --accent: #ed4563;
+    --accent-dark: #181b8e;
+    --line: #d9d9f2;
+    --text-muted: #555;
     --radius: 4px;
 }
 
@@ -176,6 +176,71 @@ h1, .brand {
     border-top: 1px solid var(--line);
 }
 
+.skills {
+    padding: 5rem 0;
+    background-color: #f5f5ff;
+}
+
+.section-kicker {
+    color: #ED4563;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+}
+
+.skills h2 {
+    color: #181B8E;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    line-height: 1;
+    margin-bottom: 1rem;
+}
+
+.section-description {
+    color: #555;
+    max-width: 500px;
+    margin-bottom: 2.5rem;
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.skill-card {
+    padding: 2rem;
+    background: linear-gradient(135deg, #ffffff, #eef0ff);
+    border: 2px solid #181B8E;
+    border-radius: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.skill-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 8px 8px 0 #ED4563;
+}
+
+.skill-number {
+    display: block;
+    color: #078BED;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+}
+
+.skill-card h3 {
+    color: #181B8E;
+    font-size: 1.3rem;
+    margin-bottom: 0.75rem;
+}
+
+.skill-card p {
+    color: #666;
+    font-size: 0.95rem;
+}
+
 @media (max-width: 600px) {
     .hero-grid {
         grid-template-columns: 1fr;
@@ -191,5 +256,17 @@ h1, .brand {
 
     .social-links {
         justify-content: flex-start;
+    }
+
+    .skills-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .skills {
+        padding: 4rem 0;
+    }
+
+    .skill-card {
+        padding: 1.5rem;
     }
 }
