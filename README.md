@@ -14,3 +14,15 @@ Class : PBP E
   
 I use AI as a tool to help me understand the concepts of semantic HTML and CSS Grid
 and to debug when the results aren't as expected  
+
+```Assignment 2```  
+  
+1. Ketika pertama kali pengguna membuka halaman portofolio melalui browser, itu menggunaka url.py dari project, kemudian Django mengarahkan ke urls.py aplikasi yang relevan. Lalu, memetakan URL tersebut kepada fungsi view tertentu. Kemudian mengambil data dari Model dan meneruskannya ke Template. Template ini lah dapat dilihat oleh pengguna dan kemudian mengirim respons kembali ke browser pengguna.  
+
+2. Penyimpanan data pada Model, bukan di Template, menjadikan web lebih modular dan mudah dikelola sehingga apabila ingin dilakukan pengembangan pada data atau sebaliknya, tidak akan mengganggu fungsi lain.  
+  
+3. makemigration membuat file migrasi beisi sekumpulan peubahan yang telah kita tambahkan pada Model, sedangkan migrate menerapkan file migrasi yang telah kita ciptakan ke database. Contoh kasus menjalankan kedua perintah tersebut adalah jika ingin menambahkan field baru, misalnya bio, di model portofolio, kita perlu menjalankan makemigration dan migrate agar perubahan terintegrasi dengan database.  
+  
+```AI Disclosure```  
+  
+Saya menggunakan ChatGPT sebagai alat untuk membantu saya dalam melakukan debugging saat terjadi ketidak sesuaian pada hasil yang saya ekspektasikan. Kemudian saya juga meminta cheat sheet command reference CSS untuk mempermudah saya dalam menyelesaikan tugas 2 ini.

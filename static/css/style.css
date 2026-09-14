@@ -93,7 +93,7 @@ h1, .brand {
     font-size: 0.85rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--accent-dark);
+    color: var(--pink);
     font-weight: 700;
     margin-bottom: 0.75rem;
 }
@@ -198,7 +198,7 @@ h1, .brand {
 }
 
 .section-kicker {
-    color: var(--ink);
+    color: var(--pink);
     font-size: 0.85rem;
     font-weight: 700;
     letter-spacing: 0.08em;
@@ -243,7 +243,7 @@ h1, .brand {
 }
 .skill-number {
     display: block;
-    color: var(--paper);
+    color: #0e4d92;
     font-size: 0.75rem;
     font-weight: 700;
     margin-bottom: 1rem;
@@ -323,13 +323,13 @@ h1, .brand {
     border-top: 1px solid var(--line);
 }
 
-/* .section-kicker {
-    color: var(--accent-dark);
+.section-kicker {
+    color: var(--pink);
     font-size: 0.8rem;
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-} */
+}
 
 .experience-section h1 {
     margin: 0.4rem 0 1.5rem;
@@ -344,10 +344,18 @@ h1, .brand {
 
 .experience-card {
     padding: 1.25rem;
-    background: linear-gradient(135deg, var(--blue), var(--mauve));
+    background: linear-gradient(135deg, var(--mauve), var(--lavender));
     border: 1px solid #ffffff;
     border-radius: var(--radius);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.experience-card:nth-child(1) {
+    background: linear-gradient(135deg, var(--accent), var(--mauve));
+}
+
+.experience-card:nth-child(2) {
+    background: linear-gradient(135deg, var(--blue), var(--pink));
 }
 
 .experience-card:hover {
@@ -360,7 +368,7 @@ h1, .brand {
 }
 
 .experience-category {
-    color: var(--accent-dark);
+    color: #0e4d92;
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -369,15 +377,76 @@ h1, .brand {
 .experience-card h2 {
     margin: 0.5rem 0;
     font-size: 1.25rem;
+    color: var(--paper)
 }
 
 .experience-description,
 .empty-state {
-    color: var(--text-muted);
+    color: var(--paper);
 }
 
 .experience-status {
     margin-top: 1rem;
     font-size: 0.85rem;
     font-weight: 600;
+}
+
+.projects-section {
+    padding: 4rem 0;
+    border-top: 1px solid var(--line);
+}
+
+.section-kicker {
+    color: var(--pink);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.projects-section h1 {
+    margin: 0.4rem 0 1.5rem;
+    font-size: 2rem;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+}
+
+.projects-card {
+    padding: 1.25rem;
+    background: linear-gradient(135deg, var(--peach), var(--lavender));
+    border: 1px solid #ffffff;
+    border-radius: var(--radius);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.projects-card:hover {
+    transform: translateY(-8px);
+    border-color: #ffffff;
+    box-shadow:
+        0 0 10px #ffffff,
+        0 0 25px var(--lavender),
+        0 0 45px var(--pink);
+}
+
+.projects-card h2 {
+    margin: 0.5rem 0;
+    font-size: 1.25rem;
+}
+
+.projects-description,
+.empty-state {
+    color: var(--text-muted);
+}
+
+.project-link {
+    background-color: var(--accent);
+    color: var(--paper);
+}
+
+.project-link:hover {
+    background-color: var(--lavender);
 }
