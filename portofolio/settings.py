@@ -33,6 +33,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "yohana-louisa-myportofolio.pws.cs.ui.ac.id",]
 
+CSRF_TRUSTED_ORIGINS = ["https://yohana-louisa-myportofolio.pws.cs.ui.ac.id"]
 
 # Application definition
 

@@ -38,6 +38,7 @@ class Project(models.Model):
     description = models.TextField()
     technologies = models.CharField(max_length=255)
     project_url = models.URLField(blank=True, null=True)
+    project_image_url = models.URLField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
