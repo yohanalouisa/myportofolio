@@ -35,8 +35,8 @@ h1, .brand {
     width: 100%;
     max-width: none;
     margin: 0 auto;
-    padding-left: 1cm;
-    padding-right: 1cm;
+    padding-left: 3cm;
+    padding-right: 3cm;
 }
 
 .site-header {
@@ -318,7 +318,56 @@ h1, .brand {
     .skill-card {
         padding: 1.5rem;
     }
+    .project-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .project-add-button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .project-search {
+        flex-direction: column;
+    }
+
+    .project-search .button {
+        width: 100%;
+    }
+
+    .project-delete-modal {
+        align-items: flex-end;
+        padding: 0;
+    }
+
+    .project-delete-modal__content {
+        width: 100%;
+        padding: 1.25rem;
+        border-radius: var(--radius) var(--radius) 0 0;
+    }
+
+    .project-delete-modal__actions {
+        flex-direction: column-reverse;
+    }
+
+    .project-delete-modal__actions .button {
+        width: 100%;
+        text-align: center;
+    }
+    .experience-actions {
+        flex-direction: column;
+    }
 }
+
+@media (max-width: 1200px) {
+    .container {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+
+
 
 
 /* Experience */
@@ -343,7 +392,7 @@ h1, .brand {
 
 .experience-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1rem;
 }
 
@@ -353,6 +402,17 @@ h1, .brand {
     border: 1px solid #ffffff;
     border-radius: var(--radius);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    display:flex;
+    flex-direction:column;
+}
+
+.experience-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: auto;
+    align-items:center;
+    padding-top: 1rem;
 }
 
 .experience-card:nth-child(1) {
@@ -385,6 +445,16 @@ h1, .brand {
     color: var(--paper);
 }
 
+.experience-thumbnail {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid #ffffff;
+    object-fit: cover;
+    border-radius: var(--radius);
+    margin-bottom: 1rem;
+}
+
 .experience-description,
 .empty-state {
     color: var(--paper);
@@ -399,6 +469,11 @@ h1, .brand {
 .projects-section {
     padding: 4rem 0;
     border-top: 1px solid var(--line);
+}
+
+.projects-section .container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
 }
 
 .section-kicker {
@@ -510,16 +585,16 @@ h1, .brand {
     color: white;
     cursor: pointer;
     font: inherit;
+    font-size: 0.85rem;
     font-weight: 700;
     text-decoration: none;
 }
 
 .button-secondary {
-    background: var(--ink);
+    background: var(--accent);
 }
 
 /* Projects 2 */
-
 .project-header {
     width: 100%;
     display: flex;
@@ -567,7 +642,7 @@ h1, .brand {
     margin-bottom: 1.5rem;
 }
 
-.project-search__input {
+.project-search__input{
     width: 100%;
     min-width: 0;
     padding: 0.7rem;
@@ -594,6 +669,7 @@ h1, .brand {
 .project-actions .button {
     font-size: 0.85rem;
     font-weight: 600;
+    flex-direction: row;
 }
 
 .project-card-actions {
@@ -648,6 +724,7 @@ h1, .brand {
     width: min(100%, 480px);
     padding: 1.5rem;
     background: var(--paper);
+    color: var(--ink);
     border: 1px solid var(--line);
     border-radius: var(--radius);
     box-shadow:
@@ -663,6 +740,7 @@ h1, .brand {
         -apple-system,
         sans-serif;
     font-size: 1.5rem;
+    color: var(--ink);
 }
 
 .project-delete-modal__close {
@@ -687,44 +765,4 @@ h1, .brand {
 
 .button-danger {
     background: #b42318;
-}
-
-@media (max-width: 600px) {
-    .project-header {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .project-add-button {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .project-search {
-        flex-direction: column;
-    }
-
-    .project-search .button {
-        width: 100%;
-    }
-
-    .project-delete-modal {
-        align-items: flex-end;
-        padding: 0;
-    }
-
-    .project-delete-modal__content {
-        width: 100%;
-        padding: 1.25rem;
-        border-radius: var(--radius) var(--radius) 0 0;
-    }
-
-    .project-delete-modal__actions {
-        flex-direction: column-reverse;
-    }
-
-    .project-delete-modal__actions .button {
-        width: 100%;
-        text-align: center;
-    }
 }

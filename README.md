@@ -25,4 +25,19 @@ and to debug when the results aren't as expected
   
 ```AI Disclosure```  
   
-Saya menggunakan ChatGPT sebagai alat untuk membantu saya dalam melakukan debugging saat terjadi ketidak sesuaian pada hasil yang saya ekspektasikan. Kemudian saya juga meminta cheat sheet command reference CSS untuk mempermudah saya dalam menyelesaikan tugas 2 ini.
+Saya menggunakan ChatGPT sebagai alat untuk membantu saya dalam melakukan debugging saat terjadi ketidak sesuaian pada hasil yang saya ekspektasikan. Kemudian saya juga meminta cheat sheet command reference CSS untuk mempermudah saya dalam menyelesaikan tugas 2 ini.  
+  
+```Assignment 2```  
+  
+1. Form beroperasi secara independen dalam membuat formulir, mendefenisikan serta memvalidasi input yang dibuat secara manual sehingga dapat di custom dan hasilnya tidak langsung terkail dengan model. Karena itu, dalam pengembangannya dibutuhkan kontrol penuh. Di sisi lain, dengan ModelForm, kita dapat membuat formulir secara otomatis berdasarkan model database sehingga memudahkan kita dalam membuat, memvalidasi, serta memperbarui data pada database. Fleksibilitas dan efisiensi yang ditawarkan ModelForm sangat membantu kita dalam maintenance web nantinya.
+Dalam pembuatan formulir, {% csrf_token %} wajib kita tambahkan karena token yang unik per sesi inilah yang akan memverifikasi request http yang tidak aman dengan menggunakan autentikasi berbasis cookie sehingga dapat mencegah penyerang melakukan perubahan yang tidak diinginkan.  
+  
+2. JSON lebih disukai dalam pengembangan aplikasi web karena lebih fleksibel, ringkas karena tidak menggunakan tag sehingga lebih padat, dan readable. Selain itu, JSON  bersifat independent dari bahasa pemrograman tertentu dan menjadi format output umum bagi bebrapa API umum modern. Sebaliknya, XML masih menggunakan tag sehingga strukturnya lebih berat dan strukturnya sangat rentan terhadap risiko keamanan. XML juga menyediakan aturan untuk mendefenisikan data apapun dan menggunakan tanda untuk membedakan atribut data dan data aktual sehingga membuatnya lebih kompleks.  
+  
+3. Alur pengembalian data portofolio saya dimulai dari  view yang mengambil data dari model menggunakan query, kemudian dilakukan proses serialization, di mana data pada model diubah menjadi seperti dictionary dengan struktur python, kemudian dikonversi menjadi JSON. Serialization sangat penting agar dapat mengubah objek model mentah menjadi format yang mudah disimpan dan ditransmisikan sehingga user dapat memahami data dengan benar.  
+  
+```AI Disclosure```  
+  
+001 / 1 - Update Experience Feature: https://share.gemini.google/QMYuFsERSASa  
+Membantu permasalahan penambahan fitur update serta menemukan error pada Experience  
+ 
