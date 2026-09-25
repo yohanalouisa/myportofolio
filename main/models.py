@@ -1,5 +1,6 @@
 import uuid
 
+from django.contrib.auth.models import User  
 from django.db import models
 
 
@@ -24,6 +25,7 @@ class Experience(models.Model):
     thumbnail = models.URLField(blank=True, null=True)
     started_at = models.DateTimeField(auto_now_add=True)
     ended_at = models.DateTimeField(blank=True, null=True)
+    starred_by = models.ManyToManyField(User, related_name="starred_experience", blank=True)
 
     def __str__(self):
         return self.title
@@ -40,6 +42,7 @@ class Project(models.Model):
     project_url = models.URLField(blank=True, null=True)
     project_image_url = models.URLField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    starred_by = models.ManyToManyField(User, related_name="starred_projects", blank=True)
 
     def __str__(self):
         return self.title
