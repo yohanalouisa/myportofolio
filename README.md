@@ -27,7 +27,7 @@ and to debug when the results aren't as expected
   
 Saya menggunakan ChatGPT sebagai alat untuk membantu saya dalam melakukan debugging saat terjadi ketidak sesuaian pada hasil yang saya ekspektasikan. Kemudian saya juga meminta cheat sheet command reference CSS untuk mempermudah saya dalam menyelesaikan tugas 2 ini.  
   
-```Assignment 2```  
+```Assignment 3```  
   
 1. Form beroperasi secara independen dalam membuat formulir, mendefenisikan serta memvalidasi input yang dibuat secara manual sehingga dapat di custom dan hasilnya tidak langsung terkail dengan model. Karena itu, dalam pengembangannya dibutuhkan kontrol penuh. Di sisi lain, dengan ModelForm, kita dapat membuat formulir secara otomatis berdasarkan model database sehingga memudahkan kita dalam membuat, memvalidasi, serta memperbarui data pada database. Fleksibilitas dan efisiensi yang ditawarkan ModelForm sangat membantu kita dalam maintenance web nantinya.
 Dalam pembuatan formulir, {% csrf_token %} wajib kita tambahkan karena token yang unik per sesi inilah yang akan memverifikasi request http yang tidak aman dengan menggunakan autentikasi berbasis cookie sehingga dapat mencegah penyerang melakukan perubahan yang tidak diinginkan.  
@@ -40,4 +40,13 @@ Dalam pembuatan formulir, {% csrf_token %} wajib kita tambahkan karena token yan
   
 001 / 1 - Update Experience Feature: https://share.gemini.google/QMYuFsERSASa  
 Membantu permasalahan penambahan fitur update serta menemukan error pada Experience  
+  
+```Assignment 4```  
+  
+Menambahkan Authentication, Session and Cookies Implementation serta menambahkan fitur Star pada Experience dan Project. Kemudian menentukan akses pada super user untuk dapat melakukan setiap perubahan pada portofolio, Editor membaca data dan mengupdate experience, akun biasa dapat menambah star dan tanpa login hanya dapat membaca data.  
+  
+```AI Disclosure```  
+  
+001 / 1 - Button Star: https://share.gemini.google/acXJaM49xdcx  
+Membantu permasalahan button star tidak sesuai dengan kode css-nya 
  
