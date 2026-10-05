@@ -50,3 +50,13 @@ Menambahkan Authentication, Session and Cookies Implementation serta menambahkan
 001 / 1 - Button Star: https://share.gemini.google/acXJaM49xdcx  
 Membantu permasalahan button star tidak sesuai dengan kode css-nya 
  
+```Assignment 5```  
+  
+1. Debouncing digunakan untuk mengontrol frekuensi eksekusi sebuah fungsi dijalankan selama suatu event yang dipicu. Debounce menunggu hingga aktivitas pengguna berhenti sehingga kinerja lebih baik.  
+  
+2. Await digunakan untuk menunggu Promise dari fetch() selesai sehingga hasilnya dapat digunakan pada baris berikutnya. Jika tidak digunakan, fetch() hanya akan mengembalikan objek Promise yang masih pending dan dapat menyebabkan error.  
+  
+3. XSS adalah serangan yang menyisipkan kode JavaScript berbahaya ke dalam web. Data yang ditampilkan melalui AJAX lebih rentan terhadap XSS karena sering dimasukkan langsung ke DOM menggunakan JavaScript sehingga script berbahaya dapat ikut tereksekusi, sedangkan Django melakukan auto-escaping terhadap karakter berbahaya sehingga script akan tetap ditampilkan sebagai text.  
+  
+```AI Disclosure```  
+Pada tugas 5 ini saya tidak menggunakan AI, saya kebanyakan menyalin kode dari Tutorial 5 dan memodifikasi sesuai dengan fitur Experience pada portofolio saya
