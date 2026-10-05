@@ -10,11 +10,12 @@
                 <div class="project-header">
                     <h1>Experience</h1>
                     {% if user.is_superuser %}
-                        <a href="{% url 'main:create_experience' %}"
-                        class="button project-add-button">
+                        <button type="button"
+                                class="button experience-add-button"
+                                popovertarget="add-experience-modal">
                             <span aria-hidden="true">+</span>
                             Tambah Experience
-                        </a>
+                        </button>
                     {% endif %}
                 </div>
                 <form id="experience-search-form" class="project-search">
@@ -40,7 +41,9 @@
             </div>
         </section>
     </main>
-    
+    {% if user.is_superuser %}
+        {% include "components/experience_form_modal.html" %}
+    {% endif %}
     <script>
     // Konfigurasi
     const BASE_EXPERIENCE_ENDPOINT = "{% url 'main:get_experience_json' %}";
@@ -54,6 +57,8 @@
     const gridContainer = document.getElementById('grid');
     const searchForm = document.getElementById('experience-search-form');
     const searchInput = document.getElementById('search-input');
+    const SEARCH_DEBOUNCE_DELAY = 300;
+    let searchDebounceTimer;
 
     // Menyembunyikan/Menampilkan section halaman
     function displayPageSection({ showLoading = false, showError = false, showEmpty = false, showGrid = false }) {
@@ -160,10 +165,84 @@
     }
 
     // Event Handlers untuk Form Search
-    searchForm.addEventListener('submit', function(e) {
-        e.preventDefault(); // Mencegah reload halaman
-        fetchExperience(searchInput.value.trim()); // Jalankan pencarian via AJAX
+    function searchExperience() {
+        fetchExperience(searchInput.value.trim());
+    }
+
+    searchInput.addEventListener("input", function() {
+        clearTimeout(searchDebounceTimer);
+
+        searchDebounceTimer = setTimeout(function() {
+            searchExperience();
+        }, SEARCH_DEBOUNCE_DELAY);
     });
+
+    searchForm.addEventListener("submit", function(event) {
+        event.preventDefault();
+        clearTimeout(searchDebounceTimer);
+        searchExperience();
+    });
+
+    function closeExperienceModal() {
+        document.getElementById("add-experience-modal").hidePopover();
+    }
+
+    const CREATE_EXPERIENCE_ENDPOINT = "{% url 'main:create_experience_ajax' %}";
+    const experienceForm = document.getElementById('experience-form');
+
+    // Membaca nilai cookie, digunakan untuk mengambil token CSRF
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    // Mengirim data form ke server
+    async function addExperience(event) {
+        event.preventDefault();
+
+        const submitButton = experience.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+
+        try {
+            const response = await fetch(CREATE_EXPERIENCE_ENDPOINT, {
+                method: 'POST',
+                headers: { 'X-CSRFToken': getCookie('csrftoken') },
+                body: new FormData(experienceForm),
+            });
+            const result = await response.json().catch(() => ({}));
+
+            if (response.ok) {
+                experienceForm.reset();
+                closeExperienceModal();
+                showToast('Berhasil', 'Experience baru berhasil ditambahkan!', 'success');
+                fetchExperience(searchInput.value.trim());
+            } else {
+                const errorMessages = result.errors
+                    ? Object.values(result.errors).flat().map(error => error.message)
+                    : [result.message || `Terjadi kesalahan (status ${response.status}).`];
+                showToast('Gagal menambahkan experience', errorMessages.join(' '), 'error');
+            }
+        } catch (error) {
+            console.error('Error adding project:', error);
+            showToast('Gagal menambahkan experience', 'Tidak dapat terhubung ke server. Silakan coba lagi.', 'error');
+        } finally {
+            submitButton.disabled = false;
+        }
+    }
+
+    if (experienceForm) {
+        experienceForm.addEventListener('submit', addExperience);
+    }
 
     // Start application
     fetchExperience(searchInput.value.trim());
