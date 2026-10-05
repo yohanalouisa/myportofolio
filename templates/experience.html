@@ -68,6 +68,16 @@
         gridContainer.classList.toggle('hide', !showGrid);
     }
 
+    // Mengubah karakter khusus HTML menjadi entity agar ditampilkan sebagai teks
+    function escapeHtml(value) {
+        return String(value ?? '')
+            .replaceAll('&', '&amp;')
+            .replaceAll('<', '&lt;')
+            .replaceAll('>', '&gt;')
+            .replaceAll('"', '&quot;')
+            .replaceAll("'", '&#39;');
+    }
+
     // Membuat elemen card project
     function buildExperienceCardElement(item) {
         const experience = item.fields;
@@ -77,7 +87,7 @@
         articleElement.className = 'experience-card';
 
         const imageHtml = experience.thumbnail 
-            ? `<img src="${experience.thumbnail}" alt="Gambar ${experience.title}" class="experience-thumbnail">`
+            ? `<img src="${escapeHtml(experience.thumbnail)}" alt="Gambar ${escapeHtml(experience.title)}" class="experience-thumbnail">`
             : '';
 
         // Dummy UUID digunakan untuk digantikan oleh ID asli dari data JSON
@@ -96,16 +106,16 @@
         const isStarredClass = experience.is_starred ? " is-starred" : "";
         const starText = experience.is_starred ? "Unstar" : "Star";
         const starTitle = experience.star_count > 0 
-            ? `Dibintangi oleh ${experience.starred_by_names}` 
+            ? `Dibintangi oleh ${escapeHtml(experience.starred_by_names)}` 
             : "Jadilah yang pertama memberi star";
         const statusText = experience.is_ongoing ? "Ongoing" : "Completed";
 
         // Komponen card
         const completeCardHtml = `
             ${imageHtml}
-            <h2>${experience.title}</h2>
-            <span class="experience-category">${experience.category_display}</span>
-            <p class="experience-description">${experience.description}</p>
+            <h2>${escapeHtml(experience.title)}</h2>
+            <span class="experience-category">${escapeHtml(experience.category_display)}</span>
+            <p class="experience-description">${escapeHtml(experience.description)}</p>
             <p class="experience-status">${statusText}</p>
 
             <div class="project-card-actions">
