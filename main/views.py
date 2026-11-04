@@ -5,13 +5,13 @@ from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.core import serializers
-from django.http import HttpResponse, JsonResponse
-from django.views.decorators.http import require_POST
+from django.http import HttpResponse, JsonResponse, QueryDict
+from django.views.decorators.http import require_POST, require_http_methods
 from django.shortcuts import get_object_or_404, redirect, render
 
 from main.forms import ProjectForm, ExperienceForm
-from main.models import Experience, Project
-
+from main.models import Experience, Project, Contact
+from main.permissions import IsPortfolioOwnerOrEditorOrReadOnly
 
 def show_main(request):
     last_login = request.COOKIES.get('last_login', 'Belum ada sesi login / Cookie tidak ditemukan')
@@ -30,11 +30,14 @@ def show_main(request):
 
 def show_experience(request):
     title_query = request.GET.get("title", "").strip()
-    
+    experiences = Experience.objects.all()
+    if title_query:
+        experiences = experiences.filter(title__icontains=title_query)
     context = {
         "name": "Yohana Louisa Saragih",
         "title_query": title_query,
         "form": ExperienceForm(),
+        "experiences": experiences,
     }
     return render(request, "experience.html", context)
 
@@ -77,6 +80,7 @@ def get_experience_json(request):
                 "category_display": experience.get_category_display(),
                 "thumbnail": experience.thumbnail,
                 "is_ongoing": experience.ended_at is None,
+                "status_display": "Ongoing" if experience.ended_at is None else "Completed",
                 "star_count": starred_users.count(),
                 "is_starred": is_starred,
                 "starred_by_names": starred_by_names,
@@ -241,15 +245,15 @@ def toggle_star(request, project_id):
 
 @login_required(login_url="/login/")
 def toggle_star_experience(request, experience_id):
-    experience = get_object_or_404(Project, pk=project_id)
+    experience = get_object_or_404(Experience, pk=experience_id)
 
     if request.method == "POST":
         # Kalau akun ini sudah pernah memberi star, batalkan star-nya.
         # Kalau belum, tambahkan star.
         if request.user in experience.starred_by.all():
-            expeerience.starred_by.remove(request.user)
+            experience.starred_by.remove(request.user)
         else:
-            expeerience.starred_by.add(request.user)
+            experience.starred_by.add(request.user)
 
     return redirect("main:show_experience")
 
@@ -288,3 +292,44 @@ def create_experience_ajax(request):
         )
 
     return JsonResponse({"errors": form.errors.get_json_data()}, status=400)
+
+def contact_list(request):
+    contacts = Contact.objects.all()
+    return render(request, "contact.html", {"contacts": contacts})
+
+def contact_add(request):
+    if request.method == "POST":
+        Contact.objects.create(
+            name=request.POST.get("name"),
+            email=request.POST.get("email"),
+        )
+    contacts = Contact.objects.all()
+    return render(request, "_contact_rows.html", {"contacts": contacts})
+
+@require_http_methods(["DELETE"])
+def contact_delete(request, pk):
+    contact = get_object_or_404(Contact, pk=pk)
+    contact.delete()
+    return HttpResponse("")
+
+def contact_search(request):
+    query = request.GET.get("q", "")
+    contacts = Contact.objects.filter(name__icontains=query) if query else Contact.objects.all()
+    return render(request, "_contact_rows.html", {"contacts": contacts})
+
+def contact_edit(request, pk):
+    contact = get_object_or_404(Contact, pk=pk)
+    return render(request, "_contact_edit_row.html", {"contact": contact})
+
+def contact_row(request, pk):
+    contact = get_object_or_404(Contact, pk=pk)
+    return render(request, "_contact_row.html", {"contact": contact})
+
+@require_http_methods(["PUT"])
+def contact_update(request, pk):
+    contact = get_object_or_404(Contact, pk=pk)
+    data = QueryDict(request.body)
+    contact.name = data.get("name", contact.name)
+    contact.email = data.get("email", contact.email)
+    contact.save()
+    return render(request, "_contact_row.html", {"contact": contact})

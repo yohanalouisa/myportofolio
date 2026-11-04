@@ -8,10 +8,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.11/dist/htmx.min.js"></script>
     {% block meta %} {% endblock meta %}
 </head>
 
-<body>
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
   <header class="site-header">
     <div class="container">
         <a href="{% url 'main:show_main' %}" class="brand">{{ name }}</a>
@@ -19,6 +20,7 @@
             <a href="{% url 'main:show_main' %}">Profile</a>
             <a href="{% url 'main:show_experience' %}">Experience</a>
             <a href="{% url 'main:show_projects' %}">Projects</a>
+            <a href="{% url 'main:contact_list' %}">Contact</a>
             {% if user.is_authenticated %}
                 <span class="nav-user">{{ user.username }}</span>
                 <a href="{% url 'main:logout' %}">Logout</a>
