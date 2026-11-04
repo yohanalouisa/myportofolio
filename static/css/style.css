@@ -942,3 +942,64 @@ h1, .brand {
 .toast-success { border-left: 4px solid #22c55e; }
 .toast-error { border-left: 4px solid #b42318; }
 .toast-normal { border-left: 4px solid var(--accent); }
+
+.contact-form-card {
+    margin-bottom: 24px;
+}
+
+.contact-search {
+    margin-bottom: 56px;
+}
+
+.contact-form input {
+    width: 40%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 0.65rem 1rem;
+    border: 1px solid #f8cbb8;
+    border-radius: 16px;
+    background: #fff;
+    color: #151923;
+    font-family: inherit;
+    font-size: 20px;
+    outline: none;
+}
+
+.contact-form input:focus {
+    border-color: #e9a6b8;
+    box-shadow: 0 0 0 3px rgba(233, 166, 184, 0.2);
+}
+
+.contact-search input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.65rem 1rem;
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    font: inherit;
+    background: var(--ink);
+    color: #151923;
+}
+
+.contact-table-wrapper {
+    overflow-x: auto;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    background: #1b202b;
+}
+
+.contact-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.contact-table th,
+.contact-table td {
+    padding: 18px 22px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.contact-table th {
+    color: var(--peach);
+}
