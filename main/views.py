@@ -7,6 +7,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.core import serializers
 from django.http import HttpResponse, JsonResponse, QueryDict
 from django.views.decorators.http import require_POST, require_http_methods
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.shortcuts import get_object_or_404, redirect, render
 
 from main.forms import ProjectForm, ExperienceForm
@@ -27,7 +28,7 @@ def show_main(request):
     }
     return render(request, "index.html", context)
 
-
+@ensure_csrf_cookie
 def show_experience(request):
     title_query = request.GET.get("title", "").strip()
     experiences = Experience.objects.all()
