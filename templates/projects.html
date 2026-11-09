@@ -44,7 +44,7 @@
             </div>
         </section>
     </main>
-    {% if user.is_superuser %}
+        {% if can_edit %}
         {% include "components/project_form_modal.html" %}
     {% endif %}
     {% csrf_token %}
@@ -63,6 +63,12 @@
         const projectForm = document.getElementById('project-form');
         let projectsAbortController;
         let searchDebounceTimer;
+        const CAN_EDIT = "{{ can_edit|yesno:'true,false' }}" === "true";
+        const projectCache = new Map();
+        const projectModal = document.getElementById('add-project-modal');
+        const modalTitle = document.getElementById('add-project-modal-title');
+        const modalSubmit = projectForm ? projectForm.querySelector('button[type="submit"]') : null;
+        let editingId = null;
 
         function getCookie(name) {
             const prefix = `${name}=`;
@@ -104,11 +110,14 @@
             const remove = IS_SUPERUSER
                 ? `<button type="button" class="button button-danger" data-action="delete"
                     data-id="${escapeHtml(project.id)}">Delete</button>` : '';
+            const edit = CAN_EDIT
+                ? `<button type="button" class="button" data-action="edit"
+                    data-id="${escapeHtml(project.id)}">Update</button>` : '';
             article.innerHTML = `${image}<h2>${escapeHtml(project.title)}</h2>
                 <span class="experience-category">${escapeHtml(project.tech_stack)}</span>
                 <p class="experience-description">${escapeHtml(project.description)}</p>
                 <div class="project-card-actions"><div class="project-actions">
-                ${link}${star}${remove}</div></div>`;
+                ${link}${star}${edit}${remove}</div></div>`;
             return article;
         }
 
@@ -125,6 +134,8 @@
                 });
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 const projects = await response.json();
+                projectCache.clear();
+                projects.forEach(item => projectCache.set(item.id, item));
                 gridContainer.replaceChildren(...projects.map(buildProjectCardElement));
                 displayPageSection({ showGrid: projects.length > 0, showEmpty: projects.length === 0 });
             } catch (error) {
@@ -164,13 +175,16 @@
                 const payload = Object.fromEntries([
                     'title', 'description', 'tech_stack', 'project_url', 'project_image_url',
                 ].map(name => [name, fields.get(name)]));
-                await writeProject(BASE_PROJECTS_ENDPOINT, 'POST', payload);
-                projectForm.reset();
-                document.getElementById('add-project-modal').hidePopover();
-                showToast('Success', 'Project created.', 'success');
+                const isEdit = editingId !== null;
+                const url = isEdit
+                    ? projectEndpoint(DETAIL_PROJECT_ENDPOINT, editingId)
+                    : BASE_PROJECTS_ENDPOINT;
+                await writeProject(url, isEdit ? 'PATCH' : 'POST', payload);
+                projectModal.hidePopover();
+                showToast('Success', isEdit ? 'project updated.' : 'project created.', 'success');
                 await fetchProjects(searchInput.value.trim());
             } catch (error) {
-                showToast('Could not create project', error.message, 'error');
+                showToast('Could not save project', error.message, 'error');
             } finally {
                 button.disabled = false;
             }
@@ -178,10 +192,37 @@
 
         if (projectForm) projectForm.addEventListener('submit', addProject);
 
+        function setModalMode(isEdit) {
+            modalTitle.textContent = isEdit ? 'Edit Project' : 'Tambah Project Baru';
+            modalSubmit.textContent = isEdit ? 'Simpan Perubahan' : 'Tambah Project';
+        }
+
+        function openEditModal(id) {
+            const item = projectCache.get(id);
+            if (!item || !projectModal) return;
+            editingId = id;
+            for (const el of projectForm.elements) {
+                if (el.name && el.name in item) el.value = item[el.name] ?? '';
+            }
+            setModalMode(true);
+            projectModal.showPopover();
+        }
+
+        if (projectModal) {
+            // Saat modal ditutup, kembali ke mode "tambah"
+            projectModal.addEventListener('toggle', function (event) {
+                if (event.newState === 'closed') {
+                    editingId = null;
+                    projectForm.reset();
+                    setModalMode(false);
+                }
+            });
+        }
         gridContainer.addEventListener('click', async function(event) {
             const button = event.target.closest('button[data-action]');
             if (!button || button.disabled) return;
             const action = button.dataset.action;
+            if (action === 'edit') { openEditModal(button.dataset.id); return; }
             if (action === 'delete' && !window.confirm('Delete this project?')) return;
             button.disabled = true;
             try {
