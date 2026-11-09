@@ -2,7 +2,7 @@ Name : Yohana Louisa Saragih
 NPM : 2506584205    
 Class : PBP E  
 
-### Assignment 1  
+```Assignment 1```   
   
 1. I use a combination of HTML5 elements, such as `<section>` to separate the profile and skills sections, `<p>` for my bio text, and `<article>` for the content of each skill, to make the structure easier to understand. I haven't used `<aside>` yet because I don't have any content that serves as a sidebar or supplement to the main content.  
   
@@ -10,7 +10,7 @@ Class : PBP E
   
 3. The drawback of my static website is that whenever I want to change the information, I have to manually edit the code. Moving forward, I want my skill data to be stored and updated in a database, not in HTML.  
   
-### AI Disclosure  
+```AI Disclosure```   
   
 I use AI as a tool to help me understand the concepts of semantic HTML and CSS Grid
 and to debug when the results aren't as expected  
@@ -59,4 +59,22 @@ Membantu permasalahan button star tidak sesuai dengan kode css-nya
 3. XSS adalah serangan yang menyisipkan kode JavaScript berbahaya ke dalam web. Data yang ditampilkan melalui AJAX lebih rentan terhadap XSS karena sering dimasukkan langsung ke DOM menggunakan JavaScript sehingga script berbahaya dapat ikut tereksekusi, sedangkan Django melakukan auto-escaping terhadap karakter berbahaya sehingga script akan tetap ditampilkan sebagai text.  
   
 ```AI Disclosure```  
-Pada tugas 5 ini saya tidak menggunakan AI, saya kebanyakan menyalin kode dari Tutorial 5 dan memodifikasi sesuai dengan fitur Experience pada portofolio saya
+Pada tugas 5 ini saya tidak menggunakan AI, saya kebanyakan menyalin kode dari Tutorial 5 dan memodifikasi sesuai dengan fitur Experience pada portofolio saya  
+  
+```Assignment 6```  
+  
+1. REST adalah singkatan dari Representational State Transfer. REST adalah seperangkat batasan arsitektur, bukan format data, untuk merancang API agar komunikasi client dengan server memiliki aturan yang konsisten. API yang mengembalikan JSON belum tentu RESTful karena JSON hanya salah satu cara untuk mengimplementasikannya.  
+Metode PUT mengganti seluruh data sumber daya dengan muatan yang diberikan. Kita menggunakan metode ini jika ingin memperbarui sumber daya secara keseluruhan. Sedangkan, metode PATCH menerapkan modifikasi sebagian pada suatu sumber daya. Jadi, kita akan menggunakannya ketika ingin memperbarui sebagian dari suatu sumber daya.  
+
+2. Serializer berperan mengonversi data kompleks seperti instance model atau queryset ke dalam format seperti JSON atau XML untuk respons API. Dibandingkan merakit dictionary secara manual dengan JsonResponse, dengan serializer, konversi model ke JSON lebih praktis, dapat digunakan untuk proses create dan update, kemudian validasi data dapat secara otomatis.  
+  
+3. Autentikasi memverifikasi identitas pengguna, sedangkan otoritasi memberi pengguna tingkat akses yang tepat ke sumber daya sistem. Menyembunyikan tombol di template masih sangat rawan karena masih menyisakan celah bagi peretas untuk mengakses server. Maka dari itu, pemission  class di server harus dilakukan untuk menentukan hak aksesnya sehingga dapat menghindari peretas mengambil alih akun pengguna atau mengirimkan request langsung melalui browser.  
+  
+4. SessionAuthentication mengenali user yang sedang login dan mengirimkan cookie secara otomatis ke domain, tak terkecuali request dari situs jahat. Dengan token CSRF, token tidak dapat dibaca oleh situs lain karena dikirim melalui header X-CSRFToken.  
+force_authentication menganggap bahwa user telah login sehingga melewatkan cek token CSRF. Oleh sebab itu, test CSRF harus memakai .login() dan APIClient(enforce_csrf_checks=True) agar POST tanpa token ditolah dan yang dengan token diterima.  
+
+```AI Disclosure```  
+  
+Tool: Chat GPT  
+Penggunaan: REST Framework pada Experience 
+Keterangan: Membantu proses debugging ketika test API nya masih banyak yang error karena ketidaksesuaian variabel, PATCH, dsb.   
