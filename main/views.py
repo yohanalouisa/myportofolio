@@ -39,6 +39,10 @@ def show_experience(request):
         "title_query": title_query,
         "form": ExperienceForm(),
         "experiences": experiences,
+        "can_edit": request.user.is_authenticated and (
+            request.user.is_superuser
+            or request.user.groups.filter(name="Editor").exists()
+        ),
     }
     return render(request, "experience.html", context)
 

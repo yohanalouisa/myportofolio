@@ -56,7 +56,7 @@
             </div>
         </section>
     </main>
-    {% if user.is_superuser %}
+    {% if can_edit %}
         {% include "components/experience_form_modal.html" %}
     {% endif %}
     {% csrf_token %}
@@ -76,6 +76,12 @@
         const experienceForm = document.getElementById('experience-form');
         let experiencesAbortController;
         let searchDebounceTimer;
+        const CAN_EDIT = "{{ can_edit|yesno:'true,false' }}" === "true";
+        const experienceCache = new Map();
+        const experienceModal = document.getElementById('add-experience-modal');
+        const modalTitle = document.getElementById('add-experience-modal-title');
+        const modalSubmit = experienceForm ? experienceForm.querySelector('button[type="submit"]') : null;
+        let editingId = null;
 
         function getCookie(name) {
             const prefix = `${name}=`;
@@ -116,6 +122,9 @@
             const remove = IS_SUPERUSER
                 ? `<button type="button" class="button button-danger" data-action="delete"
                     data-id="${escapeHtml(experience.id)}">Delete</button>` : '';
+            const edit = CAN_EDIT
+                ? `<button type="button" class="button" data-action="edit"
+                    data-id="${escapeHtml(experience.id)}">Update</button>` : '';
             article.innerHTML = `${image}<h2>${escapeHtml(experience.title)}</h2>
                 <span class="experience-category">${escapeHtml(experience.category)}</span>
                 <p class="experience-description">${escapeHtml(experience.description)}</p>
@@ -137,6 +146,8 @@
                 });
                 if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 const experiences = await response.json();
+                experienceCache.clear();
+                experiences.forEach(item => experienceCache.set(item.id, item));
                 gridContainer.replaceChildren(...experiences.map(buildExperienceCardElement));
                 displayPageSection({ showGrid: experiences.length > 0, showEmpty: experiences.length === 0 });
             } catch (error) {
@@ -176,13 +187,16 @@
                 const payload = Object.fromEntries([
                     'title', 'description', 'category', 'thumbnail',
                 ].map(name => [name, fields.get(name)]));
-                await writeExperience(BASE_EXPERIENCES_ENDPOINT, 'POST', payload);
-                experienceForm.reset();
-                document.getElementById('add-experience-modal').hidePopover();
-                showToast('Success', 'experience created.', 'success');
+                                const isEdit = editingId !== null;
+                const url = isEdit
+                    ? experienceEndpoint(DETAIL_EXPERIENCE_ENDPOINT, editingId)
+                    : BASE_EXPERIENCES_ENDPOINT;
+                await writeExperience(url, isEdit ? 'PATCH' : 'POST', payload);
+                experienceModal.hidePopover();
+                showToast('Success', isEdit ? 'Experience updated.' : 'Experience created.', 'success');
                 await fetchExperiences(searchInput.value.trim());
             } catch (error) {
-                showToast('Could not create experience', error.message, 'error');
+                showToast('Could not save experience', error.message, 'error');
             } finally {
                 button.disabled = false;
             }
@@ -190,10 +204,38 @@
 
         if (experienceForm) experienceForm.addEventListener('submit', addExperience);
 
+                function setModalMode(isEdit) {
+            modalTitle.textContent = isEdit ? 'Edit Experience' : 'Tambah Experience Baru';
+            modalSubmit.textContent = isEdit ? 'Simpan Perubahan' : 'Tambah Experience';
+        }
+
+        function openEditModal(id) {
+            const item = experienceCache.get(id);
+            if (!item || !experienceModal) return;
+            editingId = id;
+            for (const el of experienceForm.elements) {
+                if (el.name && el.name in item) el.value = item[el.name] ?? '';
+            }
+            setModalMode(true);
+            experienceModal.showPopover();
+        }
+
+        if (experienceModal) {
+            // Saat modal ditutup, kembali ke mode "tambah"
+            experienceModal.addEventListener('toggle', function (event) {
+                if (event.newState === 'closed') {
+                    editingId = null;
+                    experienceForm.reset();
+                    setModalMode(false);
+                }
+            });
+        }
+
         gridContainer.addEventListener('click', async function(event) {
             const button = event.target.closest('button[data-action]');
             if (!button || button.disabled) return;
             const action = button.dataset.action;
+            if (action === 'edit') { openEditModal(button.dataset.id); return; }
             if (action === 'delete' && !window.confirm('Delete this experience?')) return;
             button.disabled = true;
             try {
